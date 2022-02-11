@@ -1,0 +1,68 @@
+<html layout:decorate="~{main-layout}">
+  <head>
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+      <table class="table table-striped">
+        <tbody>
+          <table id="document">
+            <tr>
+              <th>Last name: <span th:text="${document.patient.lastName}"></span></th>
+              <th>First name: <span th:text="${document.patient.firstName}"></span></th>
+            </tr>
+            <tr>
+              <th>Patient ID: <span th:text="${document.patient.id}"></span></th>
+              <th>Document ID: <span th:text="${document.id}"></span></th>
+            </tr>
+            <tr>
+              <th>Gender: <span th:text="${document.patient.gender}"></span></th>
+              <th>City of birth: <span th:text="${document.patient.birthCity}"></span></th>
+            </tr>
+            <tr>
+              <th>Parents: <span th:text="${document.patient.parents[0]}"></span></th>
+              <th><span th:text="${document.patient.parents[1]}"></span></th>
+            </tr>
+            <tr>
+              <th>Phone number: <span th:text="${document.patient.contact.phoneNumber}"></span></th>
+              <th>Email: <span th:text="${document.patient.contact.email}"></span></th>
+            </tr>
+            <tr>
+              <th>Address: <span
+                  th:text="${document.patient.contact.address.civicNumber} + ' ' + ${document.patient.contact.address.streetName}"></span>
+              </th>
+              <th>Medical card: <span th:text="${document.patient.medicalCard}"></span></th>
+            </tr>
+            <tr class="table-primary">
+              <th class="text-center text-align">Visits: </th>
+              <th class="text-right"><a th:href="@{'/documents/visits/' +${document.id} +'/form'}" class="btn btn-info"
+                  role="button">Add</a></th>
+            </tr>
+            <div th:each="visit: ${document.getVisits()}">
+              <tr>
+                <th>Visit date: <span th:text="${visit.visitDate}"></span></th>
+                <th class="text-right"><a th:href="@{'/documents/visits/' + ${visit.id}}" class="btn btn-info"
+                    role="button">View</a></th>
+              </tr>
+            </div>
+            <hr>
+            <tr class="table-primary">
+              <th class="text-center text-align">Antecedants:</th>
+              <th class="text-right"><a th:href="@{'/documents/antecedants/' +${document.id} +'/form'}"
+                  class="btn btn-info" role="button">Add</a></th>
+            </tr>
+            <div th:each="antecedant: ${document.getAntecedants()}">
+              <tr>
+                <th>Antecedant: <span th:text="${antecedant.diagnostic}"></span></th>
+                <th class="text-right"><a th:href="@{'/documents/antecedants/' + ${antecedant.id}}" class="btn btn-info"
+                    role="button">View</a></th>
+              </tr>
+            </div>
+          </table>
+        </tbody>
+      </table>
+    </div>
+  </body>
+
+  </html>

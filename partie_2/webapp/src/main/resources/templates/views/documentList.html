@@ -1,0 +1,145 @@
+<html layout:decorate="~{main-layout}">
+
+<head>
+  <title>List of documents</title>
+
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div class="container-fluid">
+      <div class="row" style="min-height: 50px;"></div>
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+          <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search for medical cards.." title="Type in a card">      
+       
+          <div th:each="document: ${documents}">   
+          <table class="table Document" id="oneDocument">
+          <tbody>
+       
+          <tr>
+            <th>Last name: <span th:text="${document.patient.lastName}"></span> &nbsp;
+              First name: <span th:text="${document.patient.firstName}"></span>
+              Gender: <span th:text="${document.patient.gender}"></span><br>
+              Parents: <span th:text="${document.patient.parents[0]}"></span>
+              and <span th:text="${document.patient.parents[1]}"></span><br>
+              City of birth: <span th:text="${document.patient.birthCity}"></span><br>
+              Contact information:
+              <ul>
+                <li th:text="${document.patient.contact.address.civicNumber} + ' ' + ${document.patient.contact.address.streetName}"></li>
+                <li th:text="${document.patient.contact.phoneNumber}"></li>
+                <li th:text="${document.patient.contact.email}"> </li>
+              </ul>
+              MedicalCard:
+              <ul id="myUL">
+                <li><a th:href="@{'/documents/' + ${document.id}}" th:text="${document.patient.medicalCard}"></a></li>
+               <div th:if="${document.patient.medicalDate &lt; date}">
+                  <div><span>Expiration Date: </span><span style="color:red"> Expired! <span th:text=${document.patient.medicalDate.toString()}></span></span></div>
+               </div>
+                <!-- ELSE -->
+                <div th:if="${document.patient.medicalDate &gt; date}">
+                  <div><span>Expiration Date : </span> <span th:text=${document.patient.medicalDate.toString()}></span></div>
+                </div>
+              </ul>
+            </th>
+          </tr>
+          <tr class="table-primary">
+            <th class="text-center text-align">Visits: </th>
+            <th></th>
+            <th class="text-right"><a th:href="@{'/documents/visits/' +${document.id} +'/add'}" class="btn btn-info" role="button">Add</a></th>
+          </tr>
+            <div th:each="visit: ${document.getVisits()}">
+              <tr>
+                <th>Visit date: <span th:text="${visit.visitDate}"></span> &nbsp;&nbsp;
+                  Diagnostic: <span th:text="${visit.diagnostic}"></span> &nbsp;&nbsp;
+                  Doctor:  <span th:text="${visit.doctor}"></span> &nbsp;&nbsp;
+                </th>
+                
+                <th class="text-right"><a th:href="@{'/documents/visits/' + ${visit.id}}" class="btn btn-info" role="button">View</a></th>
+                <th class="text-right"><a th:href="@{'/documents/visits/' +${visit.id} +'/edit'}" class="btn btn-info" role="button">Edit</a></th>
+            </tr>
+            </div>
+            <hr>
+            <tr class="table-primary">
+              <th class="text-center text-align">Antecedants:</th>
+              <th></th>
+              <th class="text-right"><a th:href="@{'/documents/antecedants/' +${document.id} +'/add'}" class="btn btn-info" role="button">Add</a></th>
+            </tr>
+            <div th:each="antecedant: ${document.getAntecedants()}">
+              <tr>
+                <th>Antecedant: <span th:text="${antecedant.diagnostic}"></span> &nbsp;&nbsp;
+                    Treatment: <span th:text="${antecedant.treatment}"></span> &nbsp;&nbsp;
+                    Doctor: <span th:text="${antecedant.doctor}"></span> &nbsp;&nbsp;
+
+                </th>
+             <th class="text-right"><a th:href="@{'/documents/antecedants/' + ${antecedant.id}}" class="btn btn-info" role="button">View</a></th><br>
+             <th class="text-right"><a th:href="@{'/documents/antecedants/' +${antecedant.id} +'/edit'}" class="btn btn-info" role="button">Edit</a></th>
+            </tr>
+            </div>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+  </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      function myFunction() {
+          var input, filter, ul, li, a, i, txtValue,medical;
+          medical = document.getElementById("oneDocument");
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          ul = document.getElementById("myUL");
+          li = document.getElementsByTagName("li");
+          medicalList = document.getElementsByClassName("Document");
+            for (j = 0; j < medicalList.length; j++) {
+                a = medicalList[j].getElementsByTagName("a")[0];
+                console.log(medicalList.length);
+                console.log(txtValue);
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        medicalList[j].style.display = "";
+                        li[j].style.display = "";
+                    
+                    // medical.style.display = "";
+                    // li[i].style.display = "";
+                } else { 
+                        medicalList[j].style.display = "none";
+                        li[j].style.display = "none";
+                    
+                }
+            }
+        
+      }
+      </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      function myFunction() {
+          var input, filter, ul, li, a, i, txtValue,medical;
+          medical = document.getElementById("oneDocument");
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          ul = document.getElementById("myUL");
+          li = ul.getElementsByTagName("li");
+          for (i = 0; i < li.length; i++) {
+              a = li[i].getElementsByTagName("a")[0];
+              txtValue = a.textContent || a.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  medical.style.display = "";
+                  li[i].style.display = "";
+              } else {
+                  medical.style.display = "none";
+                  li[i].style.display = "none";
+              }
+          }
+      }
+      </script> -->
+</body>
+
+</html>

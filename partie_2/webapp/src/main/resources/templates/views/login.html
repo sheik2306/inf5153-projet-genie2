@@ -1,0 +1,44 @@
+
+<html layout:decorate="~{main-layout}">
+<head>
+<style>
+  #form {
+    margin-top: 30%;
+    padding: 50px;
+    border: 1px solid #ced4da;
+}
+</style>
+</head>
+<body>
+  <div layout:fragment="content">
+    <div class="d-flex justify-content-center">
+      <form name="f" th:action="@{/login}" method="post">
+        <div class="form-group" id="form">
+        <div class="row">
+          <div th:if="${param.error}" class="alert alert-error">
+            Invalid username and password.
+          </div>
+          <div th:if="${param.logout}" class="alert alert-success">
+            You have been logged out.
+          </div>
+        </div>
+        <div class="row">
+          <label for="username">Username (test) </label>
+          <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="row">
+          <label for="password">Password (test) </label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div> <br>
+        <div class="row">
+          <button type="submit" class="btn btn-info">Login</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

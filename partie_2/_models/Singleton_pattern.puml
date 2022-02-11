@@ -1,0 +1,20 @@
+@startuml
+class AbstractDAO {
+-instance:AbstractDAO 
+    + getInstance() :  AbstractDAO
+}
+
+class AbstractService {
+    -instance:AbstractService 
+    + getInstance() :  AbstractService 
+}
+
+class Controller { 
+
+}
+
+Controller -down-> AbstractService : uses
+AbstractService -down-> AbstractDAO : uses
+AbstractService -up-> AbstractService : new
+AbstractDAO -up-> AbstractDAO : new
+@enduml

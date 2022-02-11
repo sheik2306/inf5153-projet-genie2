@@ -1,0 +1,152 @@
+@startuml
+title **Centralized Medical Document** (User  Class Diagram)
+center footer CMD - class diagram
+
+package client { 
+  
+  package client.daos {
+        class "UserDAO" as UA1 {
+
+        }
+    }
+    
+    package client.models {
+        abstract "User" as U1 {
+            - userName : String
+            - medicalCard : String
+            - password : String
+            --
+            this(medicalCard : String, password : String)
+        }
+         class "Doctor" as D1 extends U1 {
+
+        }
+
+        class "Patient" as P1 extends U1 {
+
+        }
+        class "HealthProfessional" as HP extends U1 {
+
+        }
+    }
+
+    package client.controllers { 
+        class "UserController" as UserController1 {
+                + UserDetail() : ViewAndModel 
+                + UserList() : ViewAndModel
+                + EditUser() : ViewAndModel
+        }
+    }
+    package client.views { 
+      class UserView { 
+          - list.jsp
+          - detail.jsp
+          - edit.jsp
+      }
+    }
+  
+
+
+}
+
+    UA1 --> U1
+    UserView -left- UserController1
+    
+    UserView --> U1
+   UserController1 -> UA1
+
+
+
+
+package api {
+  
+    
+    package api.repositories {
+        interface JPARepository {
+            save(model)
+            findAll()
+            edit(model)
+            FindById(model)
+        }
+
+
+    }
+
+   
+
+package api.daos {
+    abstract CrudSQLDAO<T> {
+            save(<T> model) : <T>
+            findAll() : List<T>
+            edit(<T> model) 
+            FindById(<T> model) : <T>
+
+    }
+    class UserDAO {
+            
+        }
+}
+    package api.models { 
+        abstract User { 
+            - userName : String
+            - medicalCard : String
+            - password : String
+            --
+            this( medicalCard : String, password : String)
+        }
+        class Doctor extends User {
+
+        }
+
+        class Patient extends User {
+
+        }
+        class HealthProfessional extends User {
+
+        }
+       
+    }
+     package api.iServices {
+        interface IServices<T> {
+            + add(t: T)
+            + T get() 
+            + edit(user : User)
+            + Delete(user : User)
+        }
+        abstract Services<T> extends IServices{ 
+            abstractDAO CrudSQLDAO
+            --
+            + add(t: <T>)
+            + T get() 
+            + edit(t : <T>)
+            + Delete(t : <T>)
+        }
+    }
+
+      package api.controllers { 
+        class UserController {
+            --
+            + login()
+            + logout()
+            + register()
+        }
+    }
+    package api.servicesImpl {
+        class UserServices {
+         
+        }
+    }
+    
+    Services -left-> UserServices
+    Services --> CrudSQLDAO
+    UserController --> UserServices  
+    UserDAO -down- User
+    UserDAO -right-|> CrudSQLDAO 
+    CrudSQLDAO -down-> JPARepository
+    
+
+
+    UA1 -right-> UserController : json https:5050/api
+
+}
+@enduml

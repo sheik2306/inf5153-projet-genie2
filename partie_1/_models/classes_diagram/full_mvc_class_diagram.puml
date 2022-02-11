@@ -1,0 +1,276 @@
+@startuml
+title **Centralized Medical Document** (Structure)
+center footer CMD - class diagram
+
+package client { 
+  
+  package client.daos {
+        class "UserDAO" as UA1 {
+
+        }
+
+        class "DocumentDAO" as DocumentDAO2 {
+
+        }
+
+        class "VisitDAO" as VisitDAO2 {
+
+        }
+
+        class "AntecdeantDAO" as AntecedantDAO2 {
+
+        }
+    }
+    
+    package client.models {
+        class "User" as U1 {
+
+        }
+
+        class "Antecedant" as Antecedant2 {
+
+        }
+
+        class "Document" as Document2 {
+
+        }
+
+        class "Visit" as Visit2 { 
+
+        }
+    }
+
+    package client.controllers { 
+        class "UserController" as UserController1 {
+                + userDetail() : ViewAndModel 
+                + userList() : ViewAndModel
+                + userEdit() : ViewAndModel
+        }
+
+        class "VisitController" as VisitController2 {
+            + visitDetail(): ViewAndModel
+            + visitList() : ViewAndModel
+            + visitAdd() : ViewAndModel
+        }
+    }
+    package client.views { 
+
+        package client.views.users {
+            class UserView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+              class VisitView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+              class DocumentView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+        }
+    }
+  
+
+
+}
+
+    UA1 --> U1
+    UserView -left- UserController1
+    
+    UserView --> U1
+   
+
+    VisitController2 -down-> VisitDAO2
+    VisitController2 -down-> DocumentDAO2
+
+    DocumentDAO2 -down-> Document2
+    VisitDAO2 -down-> Visit2
+    AntecedantDAO2 -down-> Antecedant2
+
+  
+  Document2 *--> Antecedant2
+  Visit2 <-left- Document2
+    
+
+
+    
+
+
+package api {
+  
+    
+    package api.repositories {
+        interface JPARepository {
+            save(model)
+            findAll()
+            edit(model)
+            FindById(model)
+        }
+
+
+    }
+
+   
+
+package api.daos {
+    abstract CrudSQLDAO<T> {
+            save(<T> model) : <T>
+            findAll() : List<T>
+            edit(<T> model) 
+            FindById(<T> model) : <T>
+
+    }
+    class UserDAO {
+            
+        }
+    class VisitDAO { 
+
+    }
+
+    class DocumentDAO {
+
+    }
+
+    class AntecedantDAO {
+
+    }
+}
+
+    package api.models { 
+        class User { 
+            - medicalCard : String
+            - userName : String
+
+        }
+        
+        class Document {
+            - visites : List<Visit>
+            - antecedants : List<Atecedant>
+            - patient : Patient 
+            
+        }
+
+        class Visit { 
+
+        }
+
+        class Antecedant {
+            - diagnostic
+            - treatment
+            - doctor 
+            - sicknessStart : Date
+            - sicknessEnd : Date
+        }
+
+        class Patient { 
+            
+        }
+    }
+     package api.iServices {
+        interface IServices<T> {
+            + add(t: T)
+            + T get() 
+            + edit(user : User)
+            + Delete(user : User)
+        }
+        abstract Services<T> extends IServices{ 
+            abstractDAO CrudSQLDAO
+            --
+            + add(t: <T>)
+            + T get() 
+            + edit(t : <T>)
+            + Delete(t : <T>)
+        }
+    }
+
+      package api.controllers { 
+        class UserController {
+
+        }
+
+        class AntecedantController { 
+
+        }
+
+        class VisitController { 
+
+        }
+
+        class DocumentController {
+
+        }
+    }
+    package api.servicesImpl {
+        class UserServices {
+         
+        }
+
+        class VisitServices {
+
+        }
+
+        class DocumentServices {
+
+        }
+
+        class AntecedantServices { 
+
+        }
+    }
+    
+    Services <-left- UserServices
+    Services --> CrudSQLDAO
+    UserController --> UserServices  
+  
+    
+    CrudSQLDAO -right-> JPARepository
+    
+
+
+
+    
+    Document *-down-> Antecedant
+    Visit <-- Document
+    Patient <-left- Document
+
+    DocumentServices -> Services
+    VisitServices -> Services
+    AntecedantServices -> Services
+
+
+    AntecedantController -> AntecedantServices
+    VisitController -> VisitServices
+    DocumentController -> DocumentServices
+
+
+    UserDAO -down- User
+    DocumentDAO -down- Document
+    AntecedantDAO -down- Antecedant
+    VisitDAO -down- Visit
+
+
+    UserDAO -right-|> CrudSQLDAO 
+    VisitDAO -right-|> CrudSQLDAO 
+    DocumentDAO -right-|> CrudSQLDAO 
+    AntecedantDAO -right-|> CrudSQLDAO 
+
+
+
+    DocumentDAO2 -down- DocumentController
+    VisitDAO2 -down- VisitController
+    AntecedantDAO2 -down- AntecedantController
+    UserController1 -> UA1
+    VisitController2 -down-> AntecedantDAO2 
+    UA1 -right- UserController 
+
+
+
+}
+@enduml

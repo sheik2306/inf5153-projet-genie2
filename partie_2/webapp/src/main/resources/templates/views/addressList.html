@@ -1,0 +1,37 @@
+<html layout:decorate="~{main-layout}">
+  <head>
+    <title>Address List</title>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <br><br>
+      <div class="d-flex justify-content-center">
+        <a href="addresses/form" class="btn btn-info" role="button">add Address</a>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="card">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Street name</th>
+                <th scope="col">Civic number</th>
+                <th scope="col">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="address: ${addresses}">
+                <th><span th:text="${address.getId()}"></th>
+                <td><span th:text="${address.streetName}"></span></td>
+                <td><span th:text="${address.civicNumber}"></span></td>
+                <td><span><a th:href="@{'/addresses/edit/' + ${address.id}}" class="btn btn-info" role="button">Edit</a></span>
+                  <span><a th:href="@{'/addresses/delete/' + ${address.id}}" class="btn btn-info" role="button">Delete</a></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+   </body>
+</html>

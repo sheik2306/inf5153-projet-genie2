@@ -1,0 +1,29 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents ("Scan RAMQ card")
+center footer CMD - sequence diagram
+
+actor "Professional/Doctor" as PD
+participant "_:DocumentView" as DV
+participant "_:DocumentController" as DC
+participant "_:Document" as D
+participant "_:DocumentDAO" as DD
+
+
+
+PD -> DC : Scan Card
+activate DC
+DC -> DD : this(numCard)
+activate DD
+
+DD -> DD: findById(numCard)
+D<-- DD : this()
+activate D
+
+D --> DC : return Document d
+deactivate D
+DC --> DV : return DocumentView(Document d)
+activate DV
+DV --> PD :
+
+@enduml

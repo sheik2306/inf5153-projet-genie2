@@ -1,0 +1,60 @@
+<html layout:decorate="~{main-layout}">
+
+<head>
+    <title>Visit Form</title>
+    <script type="text/javascript" th:src="@{/js/visitAutomaticSave.js}"></script>
+</head>
+
+<body>
+    <div id="content" layout:fragment="content">
+        <br><br>
+        <div class="d-flex justify-content-center">
+            <form action="#" th:object="${visit}" method="post">
+                <div class="form-group">
+                    <label for="institution">Institution</label>
+                    <select id="institution" name="institution" th:field="*{institution}">
+                        <option th:each="institution : ${T(com.inf5153.api.models.Institution).values()}"
+                            th:value="${institution}" th:text="${institution.institutionShow()}"></option>
+                    </select>
+
+                </div>
+                <div class="row">
+                    <input type="hidden" class="form-control" th:field="*{id}" name="id" id="id">
+                </div>
+                <div class="row">
+                    <label for="doctor">Doctor</label>
+                    <input type="text" class="form-control" th:field="*{doctor}" name="doctor" id="doctor">
+                </div>
+                <div class="row">
+                    <label for="visitDate">Date of consultation</label>
+                    <input type="date" class="form-control" th:field="*{visitDate}" name="visitDate" id="visitDate">
+                </div>
+                <div class="row">
+                    <label for="diagnostic">Diagnostic</label>
+                    <input type="text" class="form-control" th:field="*{diagnostic}" name="diagnostic" id="diagnostic">
+                </div>
+                <div class="row">
+                    <label for="treatment">Treatment</label>
+                    <input type="text" class="form-control" th:field="*{treatment}" name="treatment" id="treatment">
+                </div>
+                <div class="row">
+                    <label for="summary">Summary</label>
+                    <input type="text" class="form-control" th:field="*{summary}" name="summary" id="summary">
+                </div>
+                <div class="row">
+                    <label for="notes">Notes</label>
+                    <input type="text" class="form-control" th:field="*{notes}" name="notes" id="notes">
+                </div>
+                <div class="row">
+                    <button id="submit" type="button" class="btn btn-info">Submit</button>
+                    <button id="cancel" type="button" class="btn btn-info">Cancel</button>
+                </div>
+        </div>
+    </div>
+
+    </form>
+    </div>
+    </div>
+</body>
+
+</html>

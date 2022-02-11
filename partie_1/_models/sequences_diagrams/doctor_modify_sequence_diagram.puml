@@ -1,0 +1,42 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents (Modify a medical document)
+center footer CMD - sequence diagram
+
+actor "Doctor" as D
+participant "_: DocumentView" as DV
+participant "_: DocumentController" as DC
+participant "_: Document" as DO
+participant "_: DocumentDAO" as DD
+
+D -> DV:
+
+activate DV
+DV -> DC:edit()
+deactivate DV
+
+activate DC
+DC -> DC:verifyUserRole()
+DC -> DD :this(d : DocumentDAO)
+deactivate DC
+
+activate DD
+loop while edit
+    DD -> DD : edit(d : Document)
+end
+
+DD --> DO:this()
+activate DO
+DO --> DC: return(d : Document)
+deactivate DO
+activate DC
+
+DC --> DV: return DocumentView(d : Document))
+deactivate DC
+activate DV
+
+
+DV --> D
+deactivate DV
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents ("Modify your contact details")
+center footer CMD - sequence diagram
+actor "Patient" as P
+participant "_:DocumentView" as DV
+participant "_:InfoView" as IV
+participant "_:InfoController" as IC
+participant "_:Info" as I
+participant "_:InfoDAO" as ID
+
+activate DV
+P -> DV:
+DV -> IC : clickModifyInfo()
+activate IC
+deactivate DV
+IC -> ID : this()
+activate ID
+ID -> ID: get()
+I <-- ID : this()
+activate I
+I --> IC
+
+activate IV
+IC --> IV :
+P --> IV : Modify Info fields
+IV -> IC : Modify(d: Document)
+IC -> ID : this(i : Info)
+deactivate I
+ID -> ID : edit(i: Info)
+ID --> I : this()
+activate I
+I--> IC :
+IC --> IV : return InfoView()
+
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+interface BeanFactory{
+    + getBeanClass()
+}
+class "<<Component>>\nAddress" as Address implements BeanFactory {
+    + getBeanClass()
+}
+class "<<Component>>\nDocument" as Document implements BeanFactory {
+    + getBeanClass()
+}
+class "<<SpringBoot>>\nApplicationContext" as ApplicationContext { 
+    +createBean(bean : BeanFactory)
+}
+
+ApplicationContext -right-> BeanFactory : creates
+@enduml

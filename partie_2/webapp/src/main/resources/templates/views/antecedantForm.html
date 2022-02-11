@@ -1,0 +1,46 @@
+<html layout:decorate="~{main-layout}">
+<head>
+  <title>Antecedant Form</title>
+  <script type="text/javascript" th:src="@{/js/antecedantAutomaticSave.js}"></script>
+</head>
+<body>
+  <div layout:fragment="content">
+    <br><br>
+    <div class="d-flex justify-content-center">
+        <form action="#" th:object="${antecedant}" method="post">
+            <div class="form-group">
+                <div class="row">
+                  <input type="hidden" class="form-control" th:field="*{id}" name="id" id="antecedent_id" >
+                </div>
+                <div class="row">
+                    <label for="diagnostic">Diagnostic</label>
+                    <input type="text" class="form-control" th:field="*{diagnostic}" name="diagnostic" id="diagnostic">
+                </div>
+                <div class="row">
+                    <label for="treatment">Treatment</label>
+                    <input type="text" class="form-control" th:field="*{treatment}" name="treatment" id="treatment">
+                </div>
+                <div class="row">
+                  <label for="doctor">Doctor</label>
+                  <input type="text" class="form-control"  th:field="*{doctor}" name="doctor" id="doctor">
+              </div>
+              <div class="row">
+                <label for="sicknessStart">Date sickness started</label>
+                <input type="date" class="form-control" th:field="*{sicknessStart}" name="sicknessStart" id="sicknessStart">
+            </div>
+            <div class="row">
+              <label for="sicknessEnd">Date sickness ended</label>
+              <input type="date" class="form-control" th:field="*{sicknessEnd}" name="sicknessEnd" id="sicknessEnd">
+          </div>
+                <div class="row">
+                  <button id="submit" type="button" class="btn btn-info">Submit</button>
+                  <button id="cancel" type="button" class="btn btn-info">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+</body>
+
+
+</html>

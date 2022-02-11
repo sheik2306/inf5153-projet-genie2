@@ -1,0 +1,293 @@
+@startuml
+title **Centralized Medical Document** (Structure)
+center footer CMD - class diagram
+package webapp {
+        package webapp.views {
+
+        package webapp.views.users {
+
+            class VisitView {
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+            class DocumentView {
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+            class AddressView {
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+            class AntecedantView {
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+            class DocumentHistoryView {
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+            class LoginView {
+
+            }
+        }
+    }
+
+    package webapp.repositories {
+        interface JPARepository {
+            save(model)
+            findAll()
+            edit(model)
+            FindById(model)
+        }
+
+
+    }
+
+package webapp.daos {
+    abstract CrudSQLDAO<T> {
+            findAll() : List<T>
+            FindById(<T> model) : <T>
+            save(<T> model) : <T>
+            deleteBytId(<T> model)
+            count(<T> model)
+    }
+    class UserDAO {
+
+        }
+    class VisitDAO {
+
+    }
+
+    class DocumentDAO {
+
+    }
+
+    class AntecedantDAO {
+
+    }
+    class AddressDAO {
+
+    }
+    class DocumentHistoryDAO {
+
+    }
+    class ContactDAO {
+
+    }
+    class PatientDAO {
+
+    }
+    class RoleDAO {
+
+    }
+}
+
+    package webapp.models {
+        class Address {
+            - civicNumber : Integer
+            - streetName : String
+        }
+
+        class DocumentHistory {
+            - document : Document
+            - modificationDate : Date
+        }
+
+        enum Institution {
+            ST_MARY_HOSPITAL_CENTER,
+            LACHINE_HOSPITAL,
+            LASALLE_HOSPITAL,
+            ...
+            MONTREAL_NEUROLOGICAL_HOSPITAL
+        }
+
+        class User {
+            - userName : String
+            - password : String
+            - roles : Set<Role>
+        }
+
+        class Role {
+            - name : String
+        }
+
+        class Document {
+            - patient : Patient
+            - antecedents : List<Antecedent>
+            - visits: List<Visit>
+        }
+
+        class Visit {
+            - institution : Institution
+            - doctor : String
+            - visitDate : Date
+            - diagnostic : String
+            - treatment : String
+            - summary : String
+            - notes : String
+        }
+
+        class Antecedant {
+            - diagnostic : String
+            - treatment : String
+            - doctor : String
+            - sicknessStart : Date
+            - sicknessEnd : Date
+        }
+
+        class Patient {
+            - firstName : String
+            - lastName : String
+            - gender : Gender
+            - parents : List<String>
+            - birthCity : String
+            - contact : Contact
+            - medicalCard : String
+        }
+
+        class Contact {
+            - address : Address
+            - phoneNumber : String
+            - email : String
+        }
+
+        enum Gender {
+            MALE,
+            FEMALE,
+            OTHER
+        }
+    }
+     package webapp.iServices {
+        interface IServices<T> {
+            + add(t: T)
+            + T get()
+            + edit(user : User)
+            + Delete(user : User)
+        }
+        abstract Services<T> extends IServices{
+            abstractDAO CrudSQLDAO
+            --
+            + add(t: <T>)
+            + T get()
+            + edit(t : <T>)
+            + Delete(t : <T>)
+        }
+    }
+
+      package webapp.controllers {
+        class ApplicationController {
+
+        }
+
+        class AntecedantController {
+
+        }
+
+        class VisitController {
+
+        }
+
+        class DocumentController {
+
+        }
+        class DocumentHistoryController {
+
+        }
+        class AddressController {
+
+        }
+    }
+    package webapp.servicesImpl {
+        class UserServices {
+
+        }
+
+        class VisitServices {
+
+        }
+
+        class DocumentServices {
+
+        }
+
+        class AntecedantServices {
+
+        }
+        class DocumentHistoryServices {
+
+        }
+        class AddressServices {
+
+        }
+    }
+
+    AntecedantController -- AntecedantView
+    DocumentHistoryController -- DocumentHistoryView
+    DocumentController -up- DocumentView
+    VisitController -up- VisitView
+    AddressController -up- AddressView
+    ApplicationController -up- LoginView
+
+    IServices <-left- UserServices
+    Services -down-> CrudSQLDAO
+    ApplicationController --> UserServices
+
+
+    CrudSQLDAO -left-> JPARepository
+
+
+    Patient "1" <-up- "1" Document
+    Patient "1" -down-o "1" Gender
+    Patient "1" -down-> "1" Contact
+    Contact "1" -down-o "1" Address
+    Document "1" *-down-> "*" Antecedant
+    Document "1" *-down-> "*" Visit
+    Institution "1" o-up- "1" Visit
+    Document "1" <--* "1" DocumentHistory
+    User "1" -down-o "1" Role
+
+    DocumentServices -> IServices
+    VisitServices -> IServices
+    AntecedantServices -> IServices
+    DocumentHistoryServices -> IServices
+    AddressServices -down-> IServices
+
+
+    AntecedantController -> AntecedantServices
+    VisitController -> VisitServices
+    DocumentController -> DocumentServices
+    AddressController -> AddressServices
+    DocumentHistoryController -> DocumentHistoryServices
+
+
+    UserDAO -right- User
+    DocumentDAO -down- Document
+    AntecedantDAO -down- Antecedant
+    VisitDAO -down- Visit
+    AddressDAO -down- Address
+    DocumentHistoryDAO -down- DocumentHistory
+    ContactDAO -down- Contact
+    PatientDAO -down- Patient
+    RoleDAO -down- Role
+
+    VisitDAO -up-|> CrudSQLDAO
+    UserDAO -up-|> CrudSQLDAO
+    AddressDAO -up-|> CrudSQLDAO
+    DocumentHistoryDAO -up-|> CrudSQLDAO
+    ContactDAO -up-|> CrudSQLDAO
+    DocumentDAO -up-|> CrudSQLDAO
+    AntecedantDAO -up-|> CrudSQLDAO
+    RoleDAO -up-|> CrudSQLDAO
+    PatientDAO -up-|> CrudSQLDAO
+}
+@enduml

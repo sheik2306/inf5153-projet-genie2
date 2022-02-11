@@ -1,0 +1,281 @@
+@startuml
+title **Centralized Medical Document** (Structure)
+center footer CMD - class diagram
+package webapp {
+        package webapp.views { 
+
+        package webapp.views.users {
+          
+              class VisitView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+               class DocumentView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+              class AddressView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+
+             class AntecedantView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+             
+              class DocumentHistoryView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+          
+        }
+    }
+
+
+    package webapp.repositories {
+        interface JPARepository {
+            save(model)
+            findAll()
+            edit(model)
+            FindById(model)
+        }
+
+
+    }
+
+package webapp.daos {
+    abstract CrudSQLDAO<T> {
+            JPARepository repository;
+            + save(<T> model) : <T>
+            + findAll() : List<T>
+            + edit(<T> model) 
+            + FindById(<T> model) : <T>
+
+    }
+    class UserDAO {
+            
+        }
+    class VisitDAO { 
+
+    }
+
+    class DocumentDAO {
+
+    }
+
+    class AntecedantDAO {
+
+    }
+    class AddressDAO {
+
+    }
+    class DocumentHistoryDAO {
+
+    }
+}
+
+    package webapp.models { 
+        class Address {
+        - civicNo : Integer
+        - street_city : String
+        - province : String
+        - country : String
+        - postalCode : String
+        }
+
+        class DocumentHistory  {
+        - document : Document
+        - dateModification : Date
+        }
+
+        class DocumentHistory {
+        -  documentHistory : List<DocumentHistory>
+        }
+        
+        enum Establishment {
+        MEDICAL_CENTER_LAVAL,
+        MEDICAL_CENTER_MTL,
+        MEDICAL_CENTER_TERREBONNE,
+        }
+        
+
+        class User { 
+           - userName : String
+           - password : String
+           - role : Role
+           + this( userName : String, password : String, role  : Role)
+        }
+
+        class Role {
+            - name : String 
+        }
+
+        User -left-> Role
+
+        class Document {
+        - patient : Patient
+        - medicalCard : String 
+        - antecedents : List<Antecedent> 
+        - visits: List<Visit> 
+        - treatingDoctors : List<Doctor> 
+            
+        }
+
+        class Visit { 
+            - civicNo : Integer
+            - street_city : String
+            - province : String
+            - country : String
+            - postalCode : String
+        }
+
+        class Antecedant {
+          - diagnostic : String
+        - treatment : String
+        - doctor : Doctor
+        - sicknessStart : Date
+        - sicknessEnd : Date
+        }
+
+        class Patient { 
+               - address : Address 
+                - firstName : String
+                - lastName : String
+                - dateOfBirth : Date
+                - insuranceCard : String
+                - phoneNumber : String
+        }
+    }
+     package webapp.iServices {
+        interface IServices<T> {
+            + add(t: T)
+            + T get() 
+            + edit(user : User)
+            + Delete(user : User)
+        }
+        abstract Services<T> extends IServices{ 
+            abstractDAO CrudSQLDAO
+            --
+            + add(t: <T>)
+            + T get() 
+            + edit(t : <T>)
+            + Delete(t : <T>)
+        }
+    }
+
+      package webapp.controllers { 
+        class UserController {
+
+        }
+
+        class AntecedantController { 
+
+        }
+
+        class VisitController { 
+
+        }
+
+        class DocumentController {
+
+        }
+        class DocumentHistoryController {
+
+        }
+        class AddressController {
+
+        }
+    }
+    package webapp.servicesImpl {
+        class UserServices {
+         
+        }
+
+        class VisitServices {
+
+        }
+
+        class DocumentServices {
+
+        }
+
+        class AntecedantServices { 
+
+        }
+        class DocumentHistoryServices { 
+
+        }
+        class AddressServices {
+
+        }
+    }
+    
+    AntecedantController -- AntecedantView
+    DocumentHistoryController -- DocumentHistoryView
+    DocumentController -up- DocumentView 
+    VisitController -up- VisitView
+    AddressController -up- AddressView
+
+    IServices <-left- UserServices
+    Services -down-> CrudSQLDAO
+    UserController --> UserServices  
+  
+    
+    CrudSQLDAO -left-> JPARepository
+    
+
+
+
+    
+    Document "1" *-down-> "*" Antecedant
+    Visit "*" <-down-  "1" Document
+    Patient "1" <-up- "1" Document
+    Establishment "1" -up- "1" Visit
+    Document "1" <--* "1" DocumentHistory
+    Patient "1" -down-> "1" Address
+
+    DocumentServices -> IServices
+    VisitServices -> IServices
+    AntecedantServices -> IServices
+    DocumentHistoryServices -> IServices 
+    AddressServices -down-> IServices
+
+
+    AntecedantController -> AntecedantServices
+    VisitController -> VisitServices
+    DocumentController -> DocumentServices
+    AddressController -> AddressServices
+    DocumentHistoryController -> DocumentHistoryServices
+
+
+    UserDAO -right- User
+    DocumentDAO -down- Document
+    AntecedantDAO -down- Antecedant
+    VisitDAO -down- Visit
+    AddressDAO -down- Address
+    DocumentHistoryDAO -down- DocumentHistory
+
+    VisitDAO -up-|> CrudSQLDAO 
+    UserDAO -up-|> CrudSQLDAO 
+    AddressDAO -up-|> CrudSQLDAO
+    DocumentHistoryDAO -up-|> CrudSQLDAO
+    
+    DocumentDAO -up-|> CrudSQLDAO 
+    AntecedantDAO -up-|> CrudSQLDAO 
+
+
+
+
+}
+@enduml

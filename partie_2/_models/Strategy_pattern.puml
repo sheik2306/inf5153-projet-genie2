@@ -1,0 +1,46 @@
+@startuml
+
+package Behaviour {
+    interface JpaRepository { 
+        +findall()
+        +save()
+        +delete()
+        +findOnById(Integer id)
+    }
+
+    class AddressRepository implements JpaRepository{ 
+
+    }
+
+    class PatientRepository implements JpaRepository{ 
+
+    }
+
+    class DocumentRepository implements JpaRepository{ 
+
+    }
+}
+interface IAbstractDAO {
+    + getAll()
+    + getOneById()
+    + createOrSave()
+    + delete()
+}
+abstract AbstractDAO implements IAbstractDAO { 
+     repository : JpaRepository
+}
+
+class AddressDAO extends AbstractDAO { 
+
+}
+
+class PatientDAO extends AbstractDAO { 
+
+}
+class DocumentDAO extends AbstractDAO { 
+
+}
+
+AbstractDAO -right- JpaRepository
+
+@enduml

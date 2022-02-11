@@ -1,0 +1,19 @@
+@startuml
+participant "<<DataAccessObject>>\nDAO" as DAO
+
+participant "ApplicationContext" as AC
+
+participant "<<interface>>\nBeanFactory" as BeanFactory
+
+participant "<<Bean>>\nDocument" as Document
+
+participant "<<Bean>>\nAddress" as Address
+
+DAO -> AC : request(Document.class)
+AC -> BeanFactory : createBean(Document.class)
+opt class == Document
+BeanFactory -> Document : CreateBean();
+end
+Document -> AC : return Document
+AC -> DAO : return Document
+@enduml

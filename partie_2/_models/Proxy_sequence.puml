@@ -1,0 +1,20 @@
+@startuml
+participant Controller 
+participant ProxyServiceObject
+participant RealServiceObject
+
+Controller -> ProxyServiceObject : getInstance()
+opt instance != null
+ProxyServiceObject -> Controller : return instance
+else instance == null
+ProxyServiceObject -> RealServiceObject : getInstance()
+activate RealServiceObject
+RealServiceObject -> RealServiceObject : <<create>>
+RealServiceObject -> ProxyServiceObject : return instance
+deactivate RealServiceObject
+ProxyServiceObject -> Controller : return instance
+end
+
+
+
+@enduml  

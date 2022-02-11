@@ -1,0 +1,53 @@
+@startuml
+title **Centralized Medical Document** (Package)
+center footer CMD - package diagram
+
+package client.views {
+
+}
+
+package client.models {
+
+}
+
+package client.controllers {
+
+}
+
+package client.daos {
+
+}
+
+client.controllers -right-> client.daos
+client.daos -up-> client.models
+client.controllers --  client.views
+
+client.views --> client.models
+
+package api.models { 
+
+}
+
+package api.controllers { 
+
+}
+ 
+package api.services { 
+
+}
+
+package api.daos {
+
+}
+
+package api.repository {
+
+}
+
+api.daos --> api.models
+api.services --> api.daos
+api.controllers --> api.services
+api.daos -right-> api.repository
+
+client.daos -right-> api.controllers
+@enduml

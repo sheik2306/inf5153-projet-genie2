@@ -1,0 +1,22 @@
+@startuml
+
+
+participant "<<subClass>>\nAddressDAO" as AddressDAO
+
+participant "<<Abstract>>\n:AbstractDAO" as DAO 
+
+participant "<<interface>>\nJpaRepository" as interface
+
+participant "<<ClassA>>\nAddressRepository" as addRepository
+
+participant "<<ClassB>>\nDocumentRepository" as document
+
+
+DAO <- AddressDAO : <<extends>>
+DAO -> interface : setIntstance\n(AddressRepository repository) 
+DAO -> interface : getInstance()
+opt type == AddressRepository
+interface -> addRepository: getInstance()
+end
+addRepository -> AddressDAO : return instance
+@enduml

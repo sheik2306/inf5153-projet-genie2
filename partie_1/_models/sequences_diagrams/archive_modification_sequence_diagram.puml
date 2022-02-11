@@ -1,0 +1,33 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents (Archive modification)
+center footer CMD - sequence diagram
+
+participant "_: Document" as DO
+participant "_: DocumentHistory" as DH
+participant "_: Archive" as A
+participant "_: DocumentDAO" as DD
+
+loop while edit
+    -> DO
+    activate DO
+    activate DD
+    DO -> DD
+    deactivate DO
+    DD -> DD : edit(d : Document)
+
+    DD --> DO: this()
+    activate DO
+    DO -> DH:this(d : Document)
+
+    activate DH
+    DH -> A : add(dh : DocumentHistory)
+    deactivate DH
+    activate A
+    A -> DD 
+    deactivate A
+    DD -> DD: add(a : Archive)
+end
+
+
+@enduml

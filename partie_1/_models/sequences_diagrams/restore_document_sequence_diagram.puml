@@ -1,0 +1,104 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents (Restore a medical document)
+center footer CMD - sequence diagram
+
+actor "RAMQ/Doctor" as R
+participant "_: DocumentView" as DV
+participant "_: DocumentController" as DC
+participant "_: Document" as DO
+participant "_: DocumentDAO" as DD
+participant "_: Archive" as A
+participant "_: ArchiveDAO" as AD
+
+
+R -> DV
+activate DV
+DV -> DC: list()
+deactivate DV
+activate DC
+DC -> AD: this(a : ArchiveDAO)
+deactivate DC
+
+activate AD
+AD -> AD:findByID(p : Patient)
+
+
+AD --> A:this()
+activate A
+A --> DC:return(a : Archive)
+deactivate A
+
+activate DC
+DC --> DV: return DocumentView(a : Archive)
+deactivate DC
+
+activate DV
+DV --> R
+deactivate DV
+
+R -> DV
+activate DV
+DV -> DC:edit()
+deactivate DV
+
+activate DC
+DC -> DD :this(d : DocumentDAO)
+deactivate DC
+
+activate DD
+loop while edit
+    DD -> DD : edit(d : Document)
+end
+
+DD --> DO:this()
+activate DO
+DO --> DC: return(d : Document)
+deactivate DO
+activate DC
+
+DC --> DV: return DocumentView(d : Document))
+deactivate DC
+activate DV
+
+
+DV --> R
+deactivate DV
+
+@enduml
+
+DD -> DA :get(d : Document, da : Date)
+DA --> A :archivedDocument
+A --> DO
+DO --> DD
+DD --> DC
+DC --> DV
+deactivate DC
+
+DV --> R: viewDocument(d : Document)
+deactivate DV
+
+R -> DV
+activate DV
+DV -> DC:edit()
+
+activate DC
+DC -> DC:verifyUserRole()
+
+DC -> DD:this(d : Document)
+activate DD
+loop while edit
+    DD -> DA : edit(d : Document)
+    DA -> DA:saveModification(d : Document)
+end
+
+DA --> DO:document
+DO --> DD
+DD --> DC
+deactivate DD
+
+DC --> DV
+deactivate DC
+
+DV --> R : viewDocument(d : Document)
+deactivate DV

@@ -1,0 +1,126 @@
+@startuml
+title **Centralized Medical Document**(Specified Document Structure)
+center footer projet31 - class diagram
+
+ abstract User { 
+           - userName : String
+            - medicalCard : String
+            - password : String
+        }
+
+       class "Doctor" as D1 {
+
+        }
+
+        class "Patient" as P1 {
+
+        }
+        class "HealthProfessional" as HP {
+
+        }
+
+D1 -down-|> User
+HP -down-|> User
+P1 -down-|> User
+
+class Patient {
+   - address : Address 
+   - firstName : String
+   - lastName : String
+   - dateOfBirth : Date
+   - insuranceCard : String
+   - phoneNumber : String
+}
+
+class Doctor {
+   - name : String
+   - credentials : String
+}
+
+interface IService { 
+   + get(model : T)
+   + getAll()
+   + delete(model : T)
+   + edit (model : T)
+}
+
+class Document implements IService{
+   - patient : Patient
+   - medicalCard : String 
+   - antecedents : List<Antecedent> 
+   - visits: List<Visit> 
+   - treatingDoctors : List<Doctor> 
+}
+
+enum Establishment {
+   MEDICAL_CENTER_LAVAL,
+   MEDICAL_CENTER_MTL,
+   MEDICAL_CENTER_TERREBONNE,
+}
+
+class Address {
+   - civicNo : Integer
+   - street_city : String
+   - province : String
+   - country : String
+   - postalCode : String
+}
+
+class DocumentHistory  {
+- document : Document
+- dateModification : Date
+}
+
+class Archive {
+-  documentHistory : List<DocumentHistory>
+}
+
+class AddressController { 
+   + verifyUserRole()
+   + updatePatientAddress()
+}
+
+class DocumentController { 
+   + verifyUserRole()
+   + updateDocumentInformation()
+}
+
+class Antecedent{
+   - diagnostic : String
+   - treatment : String
+   - doctor : Doctor
+   - sicknessStart : Date
+   - sicknessEnd : Date
+}
+
+class Visit {
+- establishment : Establishment
+- doctor : Doctor
+- diagnostic : String
+- treatment :  String
+- resume : String
+- notes :  Notes
+- visitDate : Date 
+}
+
+
+
+Patient "1" -right- "1" Document
+Address "1" <-down- "1" Patient
+Doctor "*" -left- "1" Document
+Visit "1" -right- "1" Establishment
+Doctor "1" <-down- "1" Visit
+DocumentHistory "1" *--> "1" Document
+Archive "1" --> "*" DocumentHistory
+Address .up.|> IService
+AddressController -right- IService
+DocumentController -down- IService
+
+User -- DocumentController 
+User -- AddressController : UserType == Patient
+
+
+
+Antecedent "*" <-up- "1" Document
+Visit "*" <-up- "1" Document
+@enduml

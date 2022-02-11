@@ -1,0 +1,47 @@
+@startuml
+title **Centralized Medical Document** (Use Cases)
+left to right direction
+
+:Patient: as P
+:Professional: as PF
+:Doctor: as D
+:RAMQ: as R
+
+
+
+package System{
+        usecase "register" as RE
+        usecase "authenticate" as A
+        usecase "Consult your medical document" as CSD
+        usecase "Modify your contact details" as MSC
+        usecase "Scan RAMQ card" as SC
+        usecase "Consult the medical document of a patient" as CUD
+        usecase "Modify a medical document" as MD
+        usecase "Cancel modification on a medical file" as AMD
+        usecase "Restore a medical document" as RD
+        usecase "Create a medical document" as CD
+        usecase "Archive modification" as AD
+
+}
+A "<<include>>"<.. RE
+P -- MSC
+MSC "<<include>>" <.. A
+MSC "<<extends>>" -left-|> CSD
+P -- CSD
+CSD "<<include>>" <.. A
+D -- CUD
+CUD "<<include>>" <.. A
+D -- MD
+MD "<<include>>" <.. A
+D -- AMD
+AMD "<<include>>" <.. A
+D -- RD
+RD "<<include>>" <.. A
+R -up- RD
+D -- SC
+SC "<<include>>" <.. A
+PF -- SC
+AMD "<<extends>>" -left-|> MD
+MD "<<extends>>" -left-|> CUD
+
+@enduml

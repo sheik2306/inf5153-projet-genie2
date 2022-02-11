@@ -1,0 +1,21 @@
+@startuml
+title **Centralized Medical Document** (Components)
+center footer CMD - component diagram
+
+  [AndroidUI]
+  [IosUI]
+  [DesktopUI]
+  [CMD]
+  [RAMQ]
+
+
+CMD #--# AndroidUI
+CMD #--# IosUI
+CMD #--# DesktopUI
+
+component database
+
+
+database -down- CMD
+RAMQ -down- CMD
+@enduml

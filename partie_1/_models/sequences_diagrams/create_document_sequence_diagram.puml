@@ -1,0 +1,25 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents ("Create a medical document)
+center footer CMD - sequence diagram
+
+
+
+participant "_DocumentController" as DC
+participant "_Document" as D
+participant "_DocumentDAO" as DD
+loop for all Documents in RAMQ database
+activate DC
+<--DC : fetchRAMQ()
+--> DC
+
+DC -> D : this()
+activate D
+D --> DC : return Document d
+deactivate D
+DC -> DD : this()
+activate DD
+DD -> DD : add(Document d)
+
+end
+@enduml

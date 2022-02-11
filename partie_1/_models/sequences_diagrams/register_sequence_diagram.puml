@@ -1,0 +1,32 @@
+@startuml
+!include ../_common.style
+title Centralized Medical Documents ("User authenticate")
+center footer CMD - sequence diagram
+actor "User" as U
+
+participant "_:RegisterView" as RV
+participant "_:UserController" as UC
+participant "_:User" as US
+participant "_:UserDAO" as UD
+
+
+
+U -> RV : Enter user info
+activate RV
+RV -> UC:this()
+deactivate RV
+activate UC
+UC -> UC : verifyUserRole()
+UC -> US : this()
+activate US
+US -> UD: this(u : User)
+deactivate US
+activate UD
+
+UD -> UD: add(u: User)
+UD --> UC
+<--UC: register()
+deactivate UC
+
+
+@enduml

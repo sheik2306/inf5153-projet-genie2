@@ -1,0 +1,13 @@
+@startuml
+class ModelController {}
+package proxy {
+class "<<ProxyObject>>\nServiceTransaction" as ProxyService
+class "<<RealObjectService>>\nService" as Service
+class "<<RealObjectDAO>>\nDAO" as DAO
+class "<<ProxyObject>>\nDAOTransaction" as Transactional
+}
+ModelController -> ProxyService : uses
+ProxyService -> Service : create
+Service -down-> Transactional : create
+Transactional -> DAO : create
+@enduml

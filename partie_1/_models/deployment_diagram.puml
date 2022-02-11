@@ -1,0 +1,40 @@
+@startuml
+title **Centralized Medical Document** ( Deployment)
+center footer CMD - deployment diagram
+'https://plantuml.com/deployment-diagram
+
+
+node Client {
+node AndroidUI {
+artifact AndroidStudio
+}
+node IosUI {
+artifact PhoneGap
+}
+node DesktopUI {
+artifact HTML5
+}
+}
+
+
+node Server {
+artifact WebApplication
+}
+
+node Database {
+artifact sqlite
+}
+
+
+Server -down-- Database
+Server -up-- DesktopUI :  https:80
+Server -up-- IosUI : https:80
+Server -up-- AndroidStudio :  https:80
+
+
+
+
+
+
+
+@enduml

@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,400;1,400&display=swap");
+
+body {
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+#form {
+  margin-top: 30%;
+  padding: 50px;
+  border: 1px solid #ced4da;
+}
+
+table {
+  border: 1px solid #ced4da;
+}
+
+table#document {
+  border-collapse: collapse;
+  border: 1px solid black;
+  width: 40%;
+  padding: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}

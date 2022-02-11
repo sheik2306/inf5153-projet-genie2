@@ -1,0 +1,182 @@
+@startuml
+title **Centralized Medical Document** (Structure)
+center footer CMD - class diagram
+
+package client { 
+  
+  package client.daos {
+      
+
+        class "VisitDAO" as VisitDAO2 {
+
+        }
+
+        class DocumentDAO {
+
+        }
+
+        class AddressDAO {
+
+        }
+      
+    }
+    
+    package client.models {
+      class Address {
+        - civicNo : Integer
+        - street_city : String
+        - province : String
+        - country : String
+        - postalCode : String
+        }
+
+        class DocumentHistory  {
+        - document : Document
+        - dateModification : Date
+        }
+
+        class Archive {
+        -  documentHistory : List<DocumentHistory>
+        }
+
+             
+        enum Establishment {
+        MEDICAL_CENTER_LAVAL,
+        MEDICAL_CENTER_MTL,
+        MEDICAL_CENTER_TERREBONNE,
+        }
+     
+
+     
+        
+        class Document {
+        - patient : Patient
+        - medicalCard : String 
+        - antecedents : List<Antecedent> 
+        - visits: List<Visit> 
+        - treatingDoctors : List<Doctor> 
+            
+        }
+
+        class Visit { 
+            - civicNo : Integer
+            - street_city : String
+            - province : String
+            - country : String
+            - postalCode : String
+        }
+
+        class Antecedant {
+          - diagnostic : String
+        - treatment : String
+        - doctor : Doctor
+        - sicknessStart : Date
+        - sicknessEnd : Date
+        }
+
+        class Patient { 
+               - address : Address 
+                - firstName : String
+                - lastName : String
+                - dateOfBirth : Date
+                - insuranceCard : String
+                - phoneNumber : String
+        }
+    }
+
+    package client.controllers { 
+     
+
+        class "VisitController" as VisitController2 {
+            + visitDetail(): ViewAndModel
+            + visitList() : ViewAndModel
+            + visitAdd() : ViewAndModel
+        }
+
+         class "DocumentController" as DocumentController {
+            + documentDetail(): ViewAndModel
+            + documentList() : ViewAndModel
+            + documentAdd() : ViewAndModel
+        }
+
+         class "AddressController" as AddressController {
+            + addressDetail(): ViewAndModel
+            + addressEdit() : ViewAndModel
+            + visitAdd() : ViewAndModel
+        }
+
+     
+    }
+    package client.views { 
+
+        package client.views.users {
+          
+              class VisitView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+               class DocumentView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+              class AddressView { 
+                - add.jsp
+                - list.jsp
+                - detail.jsp
+                - edit.jsp
+            }
+             
+          
+        }
+    }
+  
+
+
+}
+    package api { 
+
+    }
+
+    Document *-down-> Antecedant
+    Visit <-left- Document
+    Patient <-up- Document
+    Establishment -up- Visit
+    Address <-up- Patient
+    DocumentHistory -up-> Document
+    Archive -up-> DocumentHistory
+
+    VisitController2 -up-> VisitDAO2
+    VisitController2 -right--> VisitView : !Role.Patient
+    AddressController -left-> AddressDAO
+    AddressController --> AddressView
+
+    VisitView -down-> Visit
+    AddressView -down-> Address
+
+    DocumentController --> DocumentDAO
+    DocumentDAO --> Document
+    DocumentDAO -right-> api
+    VisitDAO2 -down-> api
+    AddressDAO -> api
+    AddressDAO -> Address
+
+    DocumentController -down-> DocumentView
+    DocumentView -down-> Document
+    
+
+   
+    VisitDAO2 -down-> Visit
+
+  
+
+    
+
+
+    
+
+
+@enduml

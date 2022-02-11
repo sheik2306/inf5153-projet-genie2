@@ -1,0 +1,18 @@
+<html layout:decorate="~{main-layout}">
+<head> 
+    <title>Addresse Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div layout:fragment="content">
+	<h1>Form</h1>
+    <form action="#" th:action="@{./save}" th:object="${address}" method="post">
+    	<p>civicNumber: <input type="text" th:field="*{civicNumber}" /></p>
+        <p>streetName: <input type="text" th:field="*{streetName}" /></p>
+       <input type="text" hidden th:field="*{id}" />
+        <p><input type="submit" value="Submit" class="btn btn-info" /> &nbsp;
+            <input type="reset" value="Reset" class="btn btn-info" /></p>
+    </form>
+    </div>
+</body>
+</html>
