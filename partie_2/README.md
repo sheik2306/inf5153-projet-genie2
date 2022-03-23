@@ -6,10 +6,10 @@ Le projet est la conception d'un logiciel de centralisation de dossiers médicau
 ---
 
 ## Auteurs
-OLIVIER BOHIGAS - BOHO09069604
-ALEX DUFOUR-COUTURE - DUFA23059001
-JEFFREY ROBILLARD - ROBJ20039301
-CYLIA TAZAIRT - TAZC29579700
+OLIVIER BOHIGAS -   
+ALEX DUFOUR-COUTURE -   
+JEFFREY ROBILLARD -   
+CYLIA TAZAIRT -   
 
 ---
 
